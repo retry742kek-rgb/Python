@@ -117,6 +117,14 @@
       gap: 16px;
     }
 
+    /* Явные две колонки в ряд (Основы Python) */
+    .cards.cards-2 {
+      grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width: 560px) {
+      .cards.cards-2 { grid-template-columns: 1fr; }
+    }
+
     .card {
       display: flex;
       flex-direction: column;
@@ -212,7 +220,7 @@
         <h2>Основы Python</h2>
         <span class="count">2 карточки</span>
       </div>
-      <div class="cards">
+      <div class="cards cards-2">
         <a class="card" href="python-less7.html">
           <span class="tag">less7</span>
           <h3>Повторяем базу и собираем ООП воедино</h3>
