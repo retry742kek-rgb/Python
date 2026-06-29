@@ -185,6 +185,20 @@
     .card.soon h3 { color: var(--muted); font-weight: 500; }
     .card.soon .go { color: rgba(255,255,255,0.4); }
 
+    /* ---- White (контрольная) card ---- */
+    .card.white {
+      background: #ffffff;
+      border-color: #ffffff;
+      color: #1f2937;
+    }
+    .card.white .tag,
+    .card.white .desc { color: #6b7280; }
+    .card.white .go { color: #4f46e5; }
+    a.card.white:hover {
+      background: #ffffff;
+      border-color: #ffffff;
+    }
+
     footer {
       margin-top: 72px;
       padding-top: 24px;
@@ -241,7 +255,7 @@
       <div class="block-head">
         <span class="idx">02</span>
         <h2>Алгоритмы и структуры данных</h2>
-        <span class="count">3 карточки</span>
+        <span class="count">4 карточки</span>
       </div>
       <div class="cards cards-2">
         <a class="card" href="sort.html">
@@ -260,6 +274,12 @@
           <span class="tag">bst</span>
           <h3>Бинарное дерево поиска</h3>
           <span class="desc">Бинарное дерево поиска: структура, вставка, поиск и обход узлов.</span>
+          <span class="go">Открыть <span class="arrow">→</span></span>
+        </a>
+        <a class="card white" href="kr.html">
+          <span class="tag">kr</span>
+          <h3>Контрольная работа</h3>
+          <span class="desc">Контрольная по сортировкам и структурам данных: вариант задания и тест с выбором ответа.</span>
           <span class="go">Открыть <span class="arrow">→</span></span>
         </a>
       </div>

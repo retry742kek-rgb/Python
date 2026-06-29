@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Контрольная работа: алгоритмы и структуры данных</title>
+<style>
+  :root {
+    --accent: #4f46e5;
+    --accent-soft: #eef2ff;
+    --ink: #1f2937;
+    --muted: #6b7280;
+    --line: #e5e7eb;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", "Consolas", monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: #ffffff; color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.55; padding: 32px 20px 64px;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; }
+  header { border-bottom: 2px solid var(--accent); padding-bottom: 18px; margin-bottom: 28px; }
+  .eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em;
+             text-transform: uppercase; color: var(--accent); margin: 0 0 6px; }
+  h1 { font-size: 26px; margin: 0; font-weight: 700; }
+  .sub { color: var(--muted); margin: 8px 0 0; font-size: 15px; }
+  h2 { font-size: 18px; margin: 36px 0 14px; display: flex; align-items: center; gap: 10px; }
+  h2 .num { font-family: var(--mono); font-size: 13px; color: #fff; background: var(--accent);
+            width: 24px; height: 24px; border-radius: 6px; display: inline-flex;
+            align-items: center; justify-content: center; }
+  .btn { background: var(--accent); color: #fff; border: none; font-size: 15px; font-weight: 600;
+         padding: 13px 24px; border-radius: 10px; cursor: pointer; font-family: inherit;
+         transition: transform .06s ease, background .15s ease; }
+  .btn:hover { background: #4338ca; }
+  .btn:active { transform: translateY(1px); }
+  .variant { margin-top: 18px; border: 1px solid var(--line); border-radius: 14px;
+             overflow: hidden; display: none; }
+  .variant.show { display: block; }
+  .variant-head { background: var(--accent-soft); padding: 14px 20px; font-family: var(--mono);
+                  font-size: 13px; color: var(--accent); letter-spacing: 0.04em;
+                  border-bottom: 1px solid var(--line); }
+  .card-row { display: grid; grid-template-columns: 1fr 1fr; }
+  @media (max-width: 560px) { .card-row { grid-template-columns: 1fr; } }
+  .card { padding: 20px; }
+  .card + .card { border-left: 1px solid var(--line); }
+  @media (max-width: 560px) { .card + .card { border-left: none; border-top: 1px solid var(--line); } }
+  .card .role { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
+                text-transform: uppercase; color: var(--muted); margin: 0 0 6px; }
+  .card .name { font-size: 20px; font-weight: 700; margin: 0 0 12px; }
+  .tasklist { margin: 0; padding-left: 18px; font-size: 14px; color: var(--ink); }
+  .tasklist li { margin-bottom: 4px; }
+  .q { border: 1px solid var(--line); border-radius: 12px; padding: 16px 20px; margin-bottom: 14px; }
+  .q .qtext { font-weight: 600; margin: 0 0 12px; }
+  .q .qnum { color: var(--accent); font-family: var(--mono); margin-right: 6px; }
+  .opt { display: block; padding: 7px 0; cursor: pointer; font-size: 15px; }
+  .opt input { margin-right: 9px; accent-color: var(--accent); }
+  code { font-family: var(--mono); background: var(--accent-soft); padding: 1px 6px;
+         border-radius: 4px; font-size: 0.92em; }
+  .foot { margin-top: 18px; font-size: 13px; color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">Контрольная работа</p>
+    <h1>Алгоритмы сортировки и структуры данных</h1>
+  </header>
+
+  <h2><span class="num">1</span> Ваш вариант</h2>
+  <button class="btn" id="rollBtn">Получить вариант</button>
+
+  <div class="variant" id="variant">
+    <div class="variant-head" id="variantHead">Вариант</div>
+    <div class="card-row">
+      <div class="card">
+        <p class="role">Сортировка</p>
+        <p class="name" id="sortName"></p>
+        <ul class="tasklist">
+          <li>Кратко объясните идею алгоритма</li>
+          <li>Укажите сложность по Big O</li>
+          <li>Напишите реализацию на Python</li>
+          <li>Вручную отсортируйте список: <code id="sortExample"></code></li>
+        </ul>
+      </div>
+      <div class="card">
+        <p class="role">Структура данных</p>
+        <p class="name" id="structName"></p>
+        <ul class="tasklist">
+          <li>Объясните идею структуры</li>
+          <li>Опишите основные операции: вставка, удаление, поиск</li>
+          <li>Реализация не требуется</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <h2><span class="num">2</span> Тест</h2>
+  <p class="sub" style="margin-top:-4px">Выберите по одному ответу в каждом вопросе.</p>
+  <div id="test"></div>
+
+  <p class="foot">Ответы на тест запишите в работе. Удачи!</p>
+
+</div>
+
+<script>
+  const variants = [
+    { sort: "Пузырьковая сортировка", struct: "Бинарное дерево поиска (BST)", example: "[5, 2, 8, 1, 9, 3]" },
+    { sort: "Сортировка выбором",     struct: "Хеш-таблица",                  example: "[7, 3, 9, 1, 6, 2]" },
+    { sort: "Сортировка вставками",   struct: "Связный список",               example: "[4, 1, 7, 2, 8, 3]" },
+    { sort: "Сортировка слиянием",    struct: "Очередь",                      example: "[6, 2, 9, 1, 5, 3]" },
+    { sort: "Быстрая сортировка",     struct: "Стек",                         example: "[8, 3, 1, 7, 2, 9]" },
+  ];
+
+  const btn = document.getElementById("rollBtn");
+  const box = document.getElementById("variant");
+
+  btn.addEventListener("click", () => {
+    const i = Math.floor(Math.random() * variants.length);
+    const v = variants[i];
+    document.getElementById("variantHead").textContent = "Вариант № " + (i + 1);
+    document.getElementById("sortName").textContent = v.sort;
+    document.getElementById("structName").textContent = v.struct;
+    document.getElementById("sortExample").textContent = v.example;
+    box.classList.add("show");
+    btn.textContent = "Получить другой вариант";
+    box.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+
+  const questions = [
+    { q: "Что показывает нотация Big O?",
+      opts: ["Точное время работы в секундах", "Как растёт число операций при увеличении данных",
+             "Объём памяти компьютера", "Количество строк кода"] },
+    { q: "Какая сложность по Big O у сортировки пузырьком?",
+      opts: ["O(n)", "O(log n)", "O(n²)", "O(n log n)"] },
+    { q: "Какие сортировки имеют сложность O(n log n)?",
+      opts: ["Пузырьком и выбором", "Слиянием и быстрая",
+             "Вставками и пузырьком", "Выбором и вставками"] },
+    { q: "По какому принципу работает сортировка слиянием?",
+      opts: ["Меняет местами соседние элементы", "Делит список пополам, а потом сливает части",
+             "Ищет минимум на каждом шаге", "Вставляет элемент среди отсортированных"] },
+    { q: "Сортировка выбором на каждом шаге находит и ставит в начало...",
+      opts: ["максимальный элемент", "минимальный элемент",
+             "средний элемент", "случайный элемент"] },
+    { q: "Что выбирают в быстрой сортировке, чтобы разделить список?",
+      opts: ["наибольший элемент", "опорный элемент (pivot)",
+             "два соседних элемента", "пустой список"] },
+    { q: "Сортировка вставками похожа на то, как...",
+      opts: ["всплывают пузырьки", "раскладывают карты в руке",
+             "делят лист пополам", "ищут слово в словаре"] },
+    { q: "Бинарный поиск работает только на списке, который...",
+      opts: ["пустой", "отсортированный", "связный", "любой"] },
+    { q: "Какова сложность поиска элемента в связном списке?",
+      opts: ["O(1)", "O(log n)", "O(n)", "O(n²)"] },
+    { q: "По какому принципу работает стек?",
+      opts: ["FIFO — первый вошёл, первый вышел", "LIFO — последний вошёл, первый вышел",
+             "по индексу", "случайный доступ"] },
+    { q: "По какому принципу работает очередь?",
+      opts: ["LIFO — последний вошёл, первый вышел", "FIFO — первый вошёл, первый вышел",
+             "по ключу", "случайный доступ"] },
+    { q: "В связном списке каждый узел хранит значение и...",
+      opts: ["свой индекс", "ссылку на следующий узел",
+             "ключ", "размер всего списка"] },
+    { q: "Какова средняя сложность поиска по ключу в хеш-таблице?",
+      opts: ["O(1)", "O(n)", "O(log n)", "O(n²)"] },
+    { q: "В бинарном дереве поиска слева от узла находятся значения...",
+      opts: ["большие, чем в узле", "меньшие, чем в узле",
+             "равные узлу", "в случайном порядке"] },
+    { q: "Что выводит обход in-order у бинарного дерева поиска?",
+      opts: ["значения в случайном порядке", "значения по возрастанию",
+             "значения по убыванию", "значения в порядке добавления"] },
+  ];
+
+  const letters = ["А", "Б", "В", "Г"];
+  const test = document.getElementById("test");
+  questions.forEach((item, qi) => {
+    const div = document.createElement("div");
+    div.className = "q";
+    let html = '<p class="qtext"><span class="qnum">' + (qi + 1) + '.</span>' + item.q + '</p>';
+    item.opts.forEach((opt, oi) => {
+      html += '<label class="opt"><input type="radio" name="q' + qi + '">' +
+              letters[oi] + ') ' + opt + '</label>';
+    });
+    div.innerHTML = html;
+    test.appendChild(div);
+  });
+</script>
+</body>
+</html>
